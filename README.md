@@ -6,3 +6,6 @@ im very proud of this project it gives me confidence in what i know and love
 From here on my objective is to fix the backend which is a cluster and messy, but to also get it ready for vercel
 the next part of my objective is to create an algorithm that can reccommend posts to people, i do not have enough data just yet tho
 thats all for now.
+
+
+NOTE: This will look terrible on any mobile device as i have not yet optimized it for small screens just yet!!
