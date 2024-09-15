@@ -9,3 +9,27 @@
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+@media (max-width: 1000px){
+    .small-sidepanel{
+        display: none;
+    }
+    .small-letpost{
+        flex-direction: column;
+    }
+}
+
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for Firefox */
+  .hide-scrollbar {
+    scrollbar-width: none; /* For Firefox */
+  }
+  
+  /* Hide scrollbar for Internet Explorer and Edge */
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+  }

@@ -8,6 +8,7 @@ const UserProfileHead = (props) => {
       <div className="">
         <div className="">
           <img
+           className="rounded-full"
             height={200}
             width={200}
             src={`http://localhost:3000${props.userData.profilepic}`}

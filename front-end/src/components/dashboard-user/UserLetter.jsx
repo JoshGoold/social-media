@@ -25,6 +25,7 @@ const UserLetter = (props) => {
       if (response.data.Success) {
         alert(response.data.Message);
         props.handleUserProfile();
+        window.location.reload()
         setCommentL("");
       } else {
         alert(response.data);
@@ -47,6 +48,7 @@ const UserLetter = (props) => {
       if (response.data.Success) {
         alert(response.data.Message);
         props.handleUserProfile();
+        window.location.reload()
       } else {
         alert(response.data);
       }

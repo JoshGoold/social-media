@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../CookieContext.jsx";
-import Conversations from "./dashboard-user/Conversations.jsx";
 import ProfileHead from "./dashboard-user/ProfileHead.jsx";
 import Letter from "./dashboard-user/Letter.jsx";
 import Post from "./dashboard-user/Post.jsx";
-import Followers from "./dashboard-user/Followers.jsx";
-import Following from "./dashboard-user/Following.jsx";
-import Search from "./functions/Search.jsx";
-import Logout from "./registry/Logout.jsx";
 import pic from "../assets/defaultpic.png";
 import Sidepanel from "./dashboard-user/Sidepanel.jsx";
 import { useParams } from "react-router-dom";
+import Conversations from "./dashboard-user/Conversations.jsx";
+import Logout from "./registry/Logout.jsx";
+import Search from "./functions/Search.jsx";
 
 const Dashboard = () => {
   const { user } = useContext(UserContext);
 
   const { username } = useParams();
+
+
 
   const [userData, setUserData] = useState({
     username: "",
@@ -29,6 +29,23 @@ const Dashboard = () => {
     followers: [],
     following: [],
   });
+
+  const [windowWidth, setWindowWidth] = useState(window.screen.width);
+  const [state, setState] = useState("Letters")
+  const [sideState, setSideState] = useState(false)
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    setWindowWidth(window.innerWidth)
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+    
+  }, []);
 
   const handleUserProfile = async () => {
     try {
@@ -66,25 +83,50 @@ const Dashboard = () => {
 
   return (
     <div className="flex  h-screen">
-      <div className="flex-2">
-        <Sidepanel userData={userData} setUserData={setUserData} user={user} />
-      </div>
-      <div className="p-2 overflow-scroll flex w-full flex-col items-center">
+      {windowWidth > 1000 ? (
+        <div className="flex-2 small-sidepanel">
+          <Sidepanel userData={userData} setUserData={setUserData} user={user} />
+        </div>
+      ) : (
+      <div className="">
+        <div className="">
+          <button onClick={()=> setSideState(!sideState)} className="text-4xl hover:scale-110 hover:text-gray-300 duration-200 text-white fixed top-0 right-3">≣</button>
+        </div>
+        {sideState && (
+          <div className="w-full h-screen">
+          <Sidepanel userData={userData} setUserData={setUserData} user={user} />
+          </div>
+        )}
+        </div>
+      )}
+      
+      <div className="p-2 overflow-scroll  hide-scrollbar flex w-full flex-col items-center">
         <ProfileHead
           userData={userData}
           setUserData={setUserData}
           handleUserProfile={handleUserProfile}
           user={user}
         />
-        <div className="flex w-full gap-2 mt-5">
-          <div className="shadow-md rounded-lg bg-opacity-10  bg-white w-full p-2">
-            <h1 className="font-thin text-white text-2xl">Letters</h1>
+        {windowWidth > 1000 ? (
+          <div className="flex w-full gap-2 mt-5">
+            <div className="shadow-md rounded-lg bg-opacity-10 bg-white w-full p-2">
+              <h1 className="font-thin text-white text-2xl">Letters</h1>
+            </div>
+            <div className="shadow-md w-full rounded-lg bg-opacity-10 bg-white p-2">
+              <h1 className="font-thin text-white text-2xl">Posts</h1>
+            </div>
           </div>
-          <div className="shadow-md w-full rounded-lg bg-opacity-10 bg-white p-2">
-            <h1 className="font-thin text-white text-2xl">Posts</h1>
+        ) : 
+        (
+          <div className="text-white items-center flex gap-1 w-full bg-opacity-15 bg-purple-800 mt-10">
+            <button onClick={()=> setState("Letters")} className="bg-slate-600  bg-opacity-30 p-3 hover:bg-slate-500">Letters</button>
+            <button onClick={()=> setState("Posts")}  className="bg-slate-600 bg-opacity-30 p-3 hover:bg-slate-500" >Posts</button>
+            <button  onClick={()=> setState("Conversations")}  className="bg-slate-600 bg-opacity-30 p-3 hover:bg-slate-500">Conversations</button>
+            
           </div>
-        </div>
-        <div className="flex border-t-2 mt-3 border-black w-full">
+        )}
+      {windowWidth > 1000 ? (
+        <div className="flex small-letpost border-t-2 mt-3 border-black w-full">
           <div className="w-full ">
             <Letter
               userData={userData}
@@ -101,7 +143,38 @@ const Dashboard = () => {
               user={user}
             />
           </div>
+        </div>) : (
+          <div className="flex small-letpost border-t-2 mt-3 border-black w-full">
+            {state === "Letters" && (
+          <div className="w-full ">
+            <Letter
+              userData={userData}
+              setUserData={setUserData}
+              handleUserProfile={handleUserProfile}
+              user={user}
+            />
+          </div>
+        )}
+        {state === "Posts" && (
+          <div className="w-full  ">
+            <Post
+              userData={userData}
+              setUserData={setUserData}
+              handleUserProfile={handleUserProfile}
+              user={user}
+            />
+          </div>)}
+          {state === "Conversations" && (
+
+            <Conversations
+            userData={userData}
+            setUserData={setUserData}
+            user={user}
+          />
+
+          )}
         </div>
+        )}
       </div>
     </div>
   );

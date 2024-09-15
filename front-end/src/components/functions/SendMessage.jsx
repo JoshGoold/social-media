@@ -32,11 +32,11 @@ const SendMessage = (props) => {
     }
   }
   return (
-    <div className="text-center flex">
+    <div className="text-center w-full flex">
       <input
         value={message}
         placeholder="Send message"
-        className="border-gray-400 border p-1 rounded-md"
+        className="border-gray-400 border p-1 w-full rounded-md"
         onChange={(e) => setMessage(e.target.value)}
         type="text"
         id=""

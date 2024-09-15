@@ -28,7 +28,7 @@ const Register = () => {
       return; // Exit function if any field is empty
     }
 
-    if (!validateEmailComprehensive(userData.email)) {
+    if (!validateEmailComprehensive(userInfo.email)) {
       alert("Enter a valid email address");
       return; // Exit function if email is invalid
     }
@@ -60,7 +60,7 @@ const Register = () => {
               <div className="">
                 <input
                   className="shadow-md font-thin  p-2"
-                  onChange={(e) => setUserInfo({ username: e.target.value })}
+                  onChange={(e) => setUserInfo((prev)=>({...prev, username: e.target.value }))}
                   type="text"
                   required
                   placeholder="Enter a username"
@@ -72,7 +72,7 @@ const Register = () => {
               <div className="">
                 <input
                   className="shadow-md font-thin  p-2"
-                  onChange={(e) => setUserInfo({ email: e.target.value })}
+                  onChange={(e) => setUserInfo((prev)=>({...prev, email: e.target.value }))}
                   type="text"
                   required
                   placeholder="Enter an email"
@@ -84,7 +84,7 @@ const Register = () => {
               <div className="">
                 <input
                   className="shadow-md font-thin  p-2"
-                  onChange={(e) => setUserInfo({ password: e.target.value })}
+                  onChange={(e) => setUserInfo((prev)=>({...prev, password: e.target.value }))}
                   type="password"
                   required
                   placeholder="Enter a password"

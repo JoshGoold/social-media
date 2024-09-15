@@ -47,14 +47,14 @@ const Conversations = (props) => {
   }, [props.userData?.conversations]);
 
   return (
-    <div>
+    <div  className="overflow-y-auto hide-scrollbar">
       <ul>
         <li>
           <b className="text-white text-thin">Conversations</b>
           {props.userData.conversations.map((conversation, index) => (
             <div key={index} className="bg-white rounded-md p-1 mb-3">
               <h1
-                className="text-center flex items-center gap-1 font-bold mb-3"
+                className="text-center flex flex-col items-center gap-1 font-bold mb-3"
                 onClick={() =>
                   setOpen({
                     state: !open.state,
@@ -64,8 +64,11 @@ const Conversations = (props) => {
                   })
                 }
               >
-                <img height={50} width={50} src={pic} />
+                <img className="" height={50} width={50} src={pic} />
                 <span>{conversation.head}</span>
+                {!open.state && (
+                <small className="text-gray-400 font-thin">{conversation.msgs[conversation.msgs.length-1]}</small>
+                )}
               </h1>
               <div
                 className="bg-white p-1 mb-2 relative max-h-[400px] overflow-y-auto rounded-md"
@@ -84,7 +87,7 @@ const Conversations = (props) => {
                               className={`p-1 hover:-translate-y-1 hover:shadow-lg max-w-[50%] w-auto bg-blue-500 text-white rounded-md ${
                                 msg.split(":")[0] === "You"
                                   ? "self-end text-left"
-                                  : "text-left"
+                                  : "self-start text-left"
                               }`}
                               key={index}
                             >

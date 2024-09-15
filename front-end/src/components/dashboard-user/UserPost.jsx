@@ -20,6 +20,7 @@ const UserPost = (props) => {
       if (response.data.Success) {
         alert(response.data.Message);
         props.handleUserProfile();
+        window.location.reload()
       } else {
         alert(response.data);
       }
@@ -43,6 +44,7 @@ const UserPost = (props) => {
       if (response.data.Success) {
         alert(response.data.Message);
         props.handleUserProfile();
+        window.location.reload()
         setCommentP("");
       } else {
         alert(response.data);
