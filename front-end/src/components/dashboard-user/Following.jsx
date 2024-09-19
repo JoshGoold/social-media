@@ -13,6 +13,7 @@ const Following = (props) => {
           <div key={index}>
             {state && (
               <p
+              className="cursor-pointer"
                 key={index}
                 onClick={() => nav(`/user-profile/${follow.username}`)}
                 id={follow.id}

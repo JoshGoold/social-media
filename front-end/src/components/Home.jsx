@@ -1,13 +1,49 @@
-import React from "react";
-import axios from "axios";
-import { useState, useContext } from "react";
+import React from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const UserPost = (props) => {
-  const [commentP, setCommentP] = useState("");
-  const [likeState, setLikeState] = useState({ state: false, id: "" });
-  const [commentState, setCommentState] = useState({ state: false, id: "" });
+const Home = () => {
+    const [feed, setFeed] = useState([])
+    const [curMonth, setCurMonth] = useState("");
+    const nav = useNavigate()
 
-  const likePost = async (post_id, username) => {
+const [commentP, setCommentP] = useState("");
+const [likeState, setLikeState] = useState({ state: false, id: "" });
+const [commentState, setCommentState] = useState({ state: false, id: "" });
+
+const [windowWidth, setWindowWidth] = useState(window.screen.width);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    setWindowWidth(window.innerWidth)
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+    
+  }, []);
+
+async function getData(){
+    try {
+        const response = await axios.get("http://localhost:3000/home-feed",{withCredentials: true})
+
+        if(response.data.Success){
+            setFeed(response.data.feed)
+        }
+        else{
+            alert(response.data)
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const likePost = async (post_id, username) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/like-post",
@@ -28,7 +64,12 @@ const UserPost = (props) => {
       console.error(error);
     }
   };
-
+  
+  function getMonth() {
+    const date = new Date();
+    setCurMonth(date.getMonth() + 1);
+  }
+  
   const commentPost = async (e, id, username, comment) => {
     e.preventDefault();
     try {
@@ -53,59 +94,47 @@ const UserPost = (props) => {
       console.error(error);
     }
   };
-  // async function deletePost(id) {
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:3000/delete-post`,
-  //       {
-  //         id: id,
-  //       },
-  //       { withCredentials: true }
-  //     );
-  //     if (response.data.Success) {
-  //       alert(response.data.Message);
-  //       props.handleUserProfile();
-  //       window.location.reload();
-  //     } else {
-  //       alert(response.data.Message);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+
+useEffect(()=>{
+    getData()
+    getMonth();
+},[])
+
+
+
 
   return (
-    <div className="-mt-2">
-      {props.userData?.posts?.length > 0 ? (
-        <div className="p-2 flex flex-col gap-3">
-          {props.userData.posts.map((post, index) => (
+    <div className="h-screen flex justify-center overflow-scroll">
+      {feed.length > 0 ? (
+        <div className={`p-2 ${windowWidth > 1000 ? "max-w-[60%]" : "w-full"} flex flex-col gap-3`}>
+          {feed.map((post, index) => (
             <div
               className="border-t-gray-300 shadow-md rounded-md p-3 bg-white border"
               id={post._id}
               key={index}
             >
-              <button
-                className="hover:scale-110 rounded-full "
-                onClick={() => deleteLetter(String(letter._id))}
-                title="Delete Post"
-              >
-                🔴
-              </button>
-              <img src={`http://localhost:3000${post.postImg}`} alt="Post" />
-              <p>{post.postContent}</p>
-              <div className="flex justify-between items-center">
+             
+              <h1 onClick={()=> nav(`/user-profile/${post.username}`)} className='cursor-pointer font-bold my-3'>{post.username}</h1>
+              {post.postImg ? (<img src={`http://localhost:3000${post.postImg}`} alt="Post" />) : ""}
+              {post.letterHead ? (<h1 className='font-bold text-2xl'>{post.letterHead}</h1>) : ""}
+              {post.postContent ? (<p>{post.postContent}</p>) : ""}
+              {post.letterContent ? (<p>{post.letterContent}</p>) : ""}
+              <small className="text-sm text-gray-400 font-thin">
+                {curMonth}/{post.createdAt}
+              </small>
+              <div  className="flex mt-10 justify-between">
+                <div className="">
                 <small
-                className="cursor-pointer"
                   onClick={() =>
                     setLikeState({ state: !likeState.state, id: post._id })
                   }
                 >
-                  {props?.userData?.posts[index]?.likes?.length > 0
-                    ? props.userData.posts[index].likes.length
+                  {post?.likes?.length > 0
+                    ? post.likes.length
                     : 0}{" "}
-                  Likes:{" "}
+                  Likes:{" "}</small>
                   <button
-                    onClick={() => likePost(post._id, props.userData.username)}
+                    onClick={() => likePost(post._id, post.username)}
                   >
                     ❣️
                   </button>
@@ -121,12 +150,12 @@ const UserPost = (props) => {
                         </div>
                       )}
                     </div>
-                  )) || 0}
-                </small>
-                <div className="flex gap-2 items-center">
+                  )) || 0}</div>
+                
+                <div className="items-center">
+                  {" "}
                   
                   <small
-                  className="cursor-pointer"
                     onClick={() => {
                       setCommentState({
                         state: !commentState.state,
@@ -134,9 +163,8 @@ const UserPost = (props) => {
                       });
                     }}
                   >
-                   {" "}
-                  {props?.userData?.posts[index]?.comments?.length > 0
-                    ? props?.userData?.posts[index]?.comments?.length
+                   {post?.comments?.length > 0
+                    ? post.comments.length
                     : 0}{" "} Comments:{" "}
                   </small>
                   <form
@@ -144,7 +172,7 @@ const UserPost = (props) => {
                       commentPost(
                         e,
                         post._id,
-                        props.userData.username,
+                        post.username,
                         commentP
                       )
                     }
@@ -180,10 +208,10 @@ const UserPost = (props) => {
           )) || "N/A"}
         </div>
       ) : (
-        <h1 className="text-center text-gray-600 mt-20">User has no posts</h1>
+        <h1 className="text-center text-gray-600 mt-20">Refresh Feed</h1>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default UserPost;
+export default Home

@@ -40,12 +40,12 @@ const Login = () => {
 
   return (
     <div className="relative h-screen">
-      <div className="a-center text-2xl absolute shadow-lg border bg-white bg-opacity-85 rounded-lg border-t-black p-14">
+      <div className="a-center text-2xl absolute shadow-lg border shadow-black bg-transparentbg-opacity-85 rounded-lg  p-14">
         <form onSubmit={(e) => handleLogin(e)}>
           <ul className="flex flex-col justify-center gap-4 items-center">
-            <li className="text-3xl mt-5 mb-8">Login</li>
+            <li className="text-3xl text-white mt-5 mb-8">Login</li>
             <li className="flex flex-col">
-              <h2 className=" font-thin ">Username </h2>
+              <h2 className=" font-thin text-white">Username </h2>
               <input
                 className="shadow-md font-thin  p-2"
                 type="text"
@@ -57,7 +57,7 @@ const Login = () => {
               />
             </li>
             <li className="flex flex-col">
-              <h2 className=" font-thin ">Password </h2>
+              <h2 className=" font-thin text-white">Password </h2>
               <input
                 className="shadow-md font-thin  p-2"
                 type="password"

@@ -12,7 +12,7 @@ const Followers = (props) => {
                     {props.userData.followers.map((follower, index)=>(
                     <div key={index}>
                     {state && (
-                      <p key={index} onClick={()=> nav(`/user-profile/${follower.username}`)} id={follower.id}>{follower.username}</p>
+                      <p className="cursor-pointer" key={index} onClick={()=> nav(`/user-profile/${follower.username}`)} id={follower.id}>{follower.username}</p>
                     )}
                     
                     </div>

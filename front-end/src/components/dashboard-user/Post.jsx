@@ -99,12 +99,14 @@ const Post = (props) => {
               >
                 🔴
               </button>
-              <img src={`http://localhost:3000${post.postImg}`} alt="Post" />
+              <div className="flex justify-center mb-3">
+              <img className="" src={`http://localhost:3000${post.postImg}`} alt="Post" /></div>
               <p>{post.postContent}</p>
               <small className="text-sm text-gray-400 font-thin">
                 {curMonth}/{post.createdAt}
               </small>
-              <div className="flex justify-between items-center">
+              <div className="flex mt-10 justify-between">
+                <div className="">
                 <small
                   onClick={() =>
                     setLikeState({ state: !likeState.state, id: post._id })
@@ -113,7 +115,7 @@ const Post = (props) => {
                   {props?.userData?.posts[index]?.likes?.length > 0
                     ? props.userData.posts[index].likes.length
                     : 0}{" "}
-                  Likes:{" "}
+                  Likes:</small>
                   <button
                     onClick={() => likePost(post._id, props.userData.username)}
                   >
@@ -131,23 +133,23 @@ const Post = (props) => {
                         </div>
                       )}
                     </div>
-                  )) || 0}
-                </small>
-                <div className="flex gap-2 items-center">
-                  {" "}
-                  {props?.userData?.posts[index]?.comments?.length > 0
-                    ? props.userData.posts.comments.length
-                    : 0}{" "}
-                  <small
-                    onClick={() => {
-                      setCommentState({
-                        state: !commentState.state,
-                        id: post._id,
-                      });
-                    }}
-                  >
-                    Comments:{" "}
-                  </small>
+                  )) || 0}</div>
+                
+                <div className="items-center">
+                <small
+                      onClick={() => {
+                        setCommentState({
+                          state: !commentState.state,
+                          id: post._id,
+                        });
+                      }}
+                      className="font-thin"
+                    >
+                      {props?.userData?.posts[index]?.comments?.length > 0
+                        ? props.userData.posts[index].comments.length
+                        : 0}{" "}
+                      Comments
+                    </small>
                   <form
                     onSubmit={(e) =>
                       commentPost(
@@ -167,12 +169,14 @@ const Post = (props) => {
                     />
                     <button type="submit">📩</button>
                   </form>
+                  </div>
+                </div>
                   {post.comments?.map((comment, index) => (
                     <div key={index} className="">
                       {commentState.state && (
                         <div className="">
                           {commentState.id === post._id && (
-                            <div id={comment._id} key={index}>
+                            <div className="shadow-sm flex mb-1 rounded-md border-t-gray-300 border border-l-gray-300 gap-2 p-2" id={comment._id} key={index}>
                               <h1>{comment.commenterUsername}</h1>
                               <h2>{comment.comment}</h2>
                             </div>
@@ -181,9 +185,9 @@ const Post = (props) => {
                       )}
                     </div>
                   )) || 0}
-                </div>
-              </div>
-            </div>
+                 </div>
+              
+            
           )) || "N/A"}
         </div>
       ) : (

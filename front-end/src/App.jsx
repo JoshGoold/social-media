@@ -5,6 +5,8 @@ import Register from "./components/registry/Register.jsx";
 import Login from "./components/registry/Login.jsx";
 import UserProfile from "./components/UserProfile";
 import { UserProvider } from "./CookieContext.jsx";
+import GroupType from "./components/group-folder/GroupType.jsx";
+import GroupPage from "./components/group-folder/groups/GroupPage.jsx";
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard/:username" element={<Dashboard />} />
             <Route path="/user-profile/:username" element={<UserProfile />} />
+            <Route path="/dashboard/:username/groups/:grouptype" element={<GroupType/>}/>
+            <Route path="/dashboard/:username/groups/:groupname/:groupid" element={<GroupPage/>}/>
           </Routes>
         </UserProvider>
       </BrowserRouter>

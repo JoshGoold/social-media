@@ -51,12 +51,12 @@ const Register = () => {
   };
   return (
     <div className="relative h-screen">
-      <div className="a-center text-2xl absolute shadow-lg border bg-white bg-opacity-85 rounded-lg border-t-black p-14">
+      <div className="a-center text-2xl absolute shadow-lg shadow-black border bg-transparent bg-opacity-85 rounded-lg  p-14">
         <form onSubmit={(e) => handleRegister(e)}>
           <ul className="flex flex-col justify-center gap-4 items-center">
-            <li className="text-3xl mt-5 mb-8">Register</li>
+            <li className="text-3xl text-white mt-5 mb-8">Register</li>
             <li className="flex flex-col">
-              <h2 className=" font-thin ">Username </h2>
+              <h2 className="text-white font-thin ">Username </h2>
               <div className="">
                 <input
                   className="shadow-md font-thin  p-2"
@@ -68,7 +68,7 @@ const Register = () => {
               </div>
             </li>
             <li className="flex flex-col">
-              <h2 className=" font-thin ">Email </h2>
+              <h2 className="text-white font-thin ">Email </h2>
               <div className="">
                 <input
                   className="shadow-md font-thin  p-2"
@@ -80,7 +80,7 @@ const Register = () => {
               </div>
             </li>
             <li className="flex flex-col">
-              <h2 className=" font-thin ">Password </h2>
+              <h2 className="text-white font-thin ">Password </h2>
               <div className="">
                 <input
                   className="shadow-md font-thin  p-2"

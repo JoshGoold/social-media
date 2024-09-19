@@ -42,7 +42,7 @@ const userSchama = new mongoose.Schema({
   },
   profilepic: {
     type: String,
-    default: "/profilepics/defaultpic.png",
+    default: "/profilepictures/defaultpic.png",
   },
   posts: [
     {
