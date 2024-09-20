@@ -4,13 +4,13 @@ import axios from 'axios'
 import Sports from './pages/Sports'
 import Political from './pages/Political'
 import Technology from './pages/Technology'
-import Fashion from './pages/Fashion'
 import Social from './pages/Social'
 import Arts from './pages/Arts'
 import Academic from './pages/Academic'
 import YourGroups from './YourGroups'
 import { FaHome } from "react-icons/fa";
 import { useParams } from 'react-router-dom'
+import Religion from './pages/Religion'
 
 const Groups = () => {
 const [navState, setNavState] = useState("")
@@ -26,7 +26,7 @@ const { username } = useParams()
         <li onClick={()=>setNavState("Sports")} className={`p-8 font-thin cursor-pointer ${navState === "Sports" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}>Sports</li>
         <li onClick={()=>setNavState("Academic")} className={`p-8 font-thin cursor-pointer ${navState === "Academic" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}>Academic</li>
         <li onClick={()=>setNavState("Arts")} className={`p-8 font-thin cursor-pointer ${navState === "Arts" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}>Arts</li>
-        <li onClick={()=>setNavState("Fashion")} className={`p-8 font-thin cursor-pointer ${navState === "Fashion" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}>Fashion</li>
+        <li onClick={()=>setNavState("Religion")} className={`p-8 font-thin cursor-pointer ${navState === "Religion" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}>Religion</li>
         <li onClick={()=>setNavState("Technology")} className={`p-8 font-thin cursor-pointer ${navState === "Technology" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}>Technology</li>
       </ul>
       </div>
@@ -44,8 +44,8 @@ const { username } = useParams()
       {navState === "Technology" && (
         <Technology user={username}/>
       )}
-      {navState === "Fashion" && (
-        <Fashion user={username}/>
+      {navState === "Religion" && (
+        <Religion user={username}/>
       )}
       {navState === "Social" && (
         <Social user={username}/>

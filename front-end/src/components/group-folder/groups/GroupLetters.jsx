@@ -17,13 +17,14 @@ const GroupLetters = ({getData, groupid, groupData}) => {
   const [commentState, setCommentState] = useState({ state: false, id: "" });
   const nav = useNavigate();
 
-  const commentLetter = async (e, id, username, comment) => {
+  const commentLetter = async (e, letterid, id,   comment) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `http://localhost:3000/comment-group-letter`,
         {
-          groupid: groupid,
+          letterId: letterid,
+          groupid: id,
           comment: comment,
         },
         { withCredentials: true }
@@ -218,7 +219,7 @@ const GroupLetters = ({getData, groupid, groupData}) => {
                         commentLetter(
                           e,
                           letter._id,
-                          groupData.username,
+                          groupid,
                           commentL
                         )
                       }

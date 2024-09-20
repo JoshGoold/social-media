@@ -16,7 +16,7 @@ const GroupMessage = (props) => {
           { withCredentials: true }
         );
         if (response.data.Success) {
-          alert(`Message Sent to ${props.groupname}`);
+          alert(`Message Sent to ${props.username}`);
           setMessage("");
           props.reload();
         } else {

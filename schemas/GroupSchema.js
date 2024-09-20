@@ -75,10 +75,6 @@ const GroupSchema = new mongoose.Schema({
             default: "/profilepictures/defaultpic"
         }
     }],
-    messages: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Messages'
-    }],
     posts: [
         {
           postContent: {
@@ -184,9 +180,7 @@ const GroupSchema = new mongoose.Schema({
           id: {
             type: mongoose.SchemaTypes.ObjectId,
           },
-          participantName: {
-            type: String,
-          },
+          participantName: [String]
         },
       ],
     createdAt: {

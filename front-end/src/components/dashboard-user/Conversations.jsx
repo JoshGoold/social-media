@@ -13,6 +13,14 @@ const Conversations = (props) => {
 
   const conversationEndRef = useRef(null);
 
+  useEffect(()=>{
+    console.log(open)
+  },[open])
+
+  useEffect(()=>{
+    console.log(props.userData)
+  },[props.userData])
+
   const handleUserConversations = async () => {
     try {
       const response = await axios.get(
@@ -55,19 +63,19 @@ const Conversations = (props) => {
             <div key={index} className="bg-white rounded-md p-1 mb-3">
               <h1
                 className="text-center flex flex-col  items-center gap-1 font-bold mb-3"
-                onClick={() =>
-                  setOpen({
-                    state: !open.state,
+                onClick={() =>{
+                  setOpen((prevState) => ({
+                    state: prevState.id !== conversation.convoID || !prevState.state, // Open if different or closed
                     id: conversation.convoID,
                     username: conversation.head,
                     msgs: conversation.msgs,
-                  })
+                  }))}
                 }
               >
                 <img className="" height={50} width={50} src={pic} />
                 <span>{conversation.head}</span>
                 {!open.state && (
-                <small className="text-gray-400 flex items-center font-thin">{conversation.msgs[conversation.msgs.length - 1].split(":")[0] === "You" ? "" : "🔵"}&nbsp; {conversation.msgs[conversation.msgs.length-1]}</small>
+                <small className="text-gray-400 flex items-center font-thin">{conversation?.msgs[conversation?.msgs?.length - 1].split(":")[0] === "You" ? "" : "🔵"}&nbsp; {conversation?.msgs[conversation?.msgs?.length-1]}</small>
                 )}
               </h1>
               <div
@@ -107,9 +115,9 @@ const Conversations = (props) => {
                       onClick={() =>
                         setOpen({
                           state: !open.state,
-                          id: conversation.convoID,
-                          username: conversation.head,
-                          msgs: conversation.msgs,
+                          id: "",
+                          username: "",
+                          msgs: [],
                         })
                       }
                     >

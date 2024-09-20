@@ -26,7 +26,7 @@ useEffect(()=>{
   return (
     <div>
        {groups.length > 0 ? (
-                <div className='w-[80%] ml-auto mr-auto'>
+                <div className='w-[80%] flex flex-col gap-3 ml-auto mr-auto'>
                     {groups.map((group, index)=>(
                         <div onClick={()=> nav(`/dashboard/${user}/groups/${group.groupName}/${String(group._id)}`)} key={index} className="bg-white p-3 cursor-pointer rounded-md">
                             <div className="flex gap-2 my-2 items-center">

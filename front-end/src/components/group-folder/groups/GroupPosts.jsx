@@ -22,7 +22,6 @@ const GroupPosts = ({getData, groupid, groupData}) => {
       if (response.data.Success) {
         alert(response.data.Message);
         getData()
-        window.location.reload();
       } else {
         alert(response.data);
       }
@@ -39,7 +38,7 @@ const GroupPosts = ({getData, groupid, groupData}) => {
     setCurMonth(month);
   }
 
-  const commentPost = async (e, id, username, comment) => {
+  const commentPost = async (e, id, comment) => {
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -55,7 +54,6 @@ const GroupPosts = ({getData, groupid, groupData}) => {
         alert(response.data.Message);
         getData()
         setCommentP("");
-        window.location.reload();
         
       } else {
         alert(response.data);
@@ -158,7 +156,6 @@ const GroupPosts = ({getData, groupid, groupData}) => {
                       commentPost(
                         e,
                         post._id,
-                        groupData.username,
                         commentP
                       )
                     }

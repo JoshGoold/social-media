@@ -15,13 +15,40 @@ const GroupPage = () => {
     const nav = useNavigate()
     const {username, groupname, groupid} = useParams()
     const [navState, setNavState] = useState("Hub")
-    const [groupData, setGroupData] = useState([])
+    const [groupData, setGroupData] = useState({
+        conversations: [],
+        groupAccess: "",
+        groupAdmins: [],
+        groupCategory: "",
+        groupDescription: "",
+        groupModerators: "",
+        groupProfilePic: "",
+        letters: [],
+        memberCount: "",
+        owner: {},
+        participants: [],
+        posts: [],
+        requested: []
+    })
 
     async function getGroupData(){
         try {
             const response = await axios.get(`http://localhost:3000/group-data?id=${groupid}`,{withCredentials:true})
             if(response.data.Success){
-                setGroupData(response.data.groupData)
+                setGroupData((prev)=> ({...prev, 
+                    groupAccess: response.data.groupData.groupAccess,
+                    groupAdmins: response.data.groupData.groupAdmins,
+                    groupCategory: response.data.groupData.groupCategory,
+                    groupDescription: response.data.groupData.groupDescription,
+                    groupModerators: response.data.groupData.groupModerators,
+                    groupProfilePic: response.data.groupData.groupProfilePicture,
+                    letters: response.data.groupData.letters,
+                    memberCount: response.data.groupData.memberCount,
+                    owner: response.data.groupData.owner,
+                    participants: response.data.groupData.participants,
+                    posts: response.data.groupData.posts,
+                    requested: response.data.groupData.requested_participants
+                }))
             } else{
                 alert(response.data.Message)
             }
@@ -54,7 +81,15 @@ const GroupPage = () => {
         </div>
         {navState === "Hub" && (
             <div className="mt-3">
-                <GroupHub/>
+                <GroupHub groupData={groupData}/>
+                <div className="flex mt-3">
+                    <div className="w-[50%]">
+                    <GroupLetters groupData={groupData} groupid={groupid} getData={getGroupData}/>
+                    </div>
+                    <div className="w-[50%]">
+                    <GroupPosts groupData={groupData} groupid={groupid} getData={getGroupData}/>
+                    </div>
+                </div>
             </div>
         )}
         {navState === "Members" && (
@@ -82,7 +117,7 @@ const GroupPage = () => {
         )}
         {navState === "Chat" && (
             <div className="mt-3">
-                <GroupChat groupData={groupData}  groupid={groupid} getData={getGroupData}  groupname={groupname}/>
+                <GroupChat groupData={groupData} setGroupData={setGroupData}  groupid={groupid} getData={getGroupData}  groupname={groupname}/>
             </div>
         )}
       
