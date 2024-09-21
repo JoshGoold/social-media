@@ -26,16 +26,16 @@ useEffect(()=>{
   return (
     <div>
        {groups.length > 0 ? (
-                <div className='w-[80%] flex flex-col gap-3 ml-auto mr-auto'>
+                <div className='  w-[70%] flex flex-col gap-3 ml-auto mr-auto'>
                     {groups.map((group, index)=>(
                         <div onClick={()=> nav(`/dashboard/${user}/groups/${group.groupName}/${String(group._id)}`)} key={index} className="bg-white p-3 cursor-pointer rounded-md">
                             <div className="flex gap-2 my-2 items-center">
-                            <img src={`http://localhost:3000${group.groupProfilePicture}`} height={100} width={100}/>
+                            <img className='rounded-full' src={`http://localhost:3000${group.groupProfilePicture}`} height={100} width={100}/>
                             <h1 className='font-bold text-2xl'>{group.groupName}</h1>
                             </div>
                             <p className='my-2'>{group.groupDescription}</p>
                             
-                            <ul className='flex justify-between'>
+                            <ul className='flex  justify-between'>
                                 <li>{group?.participants?.length || 0}/{group.memberCount} Members</li>
                                 <li>{group.groupAccess}</li>
                             </ul>

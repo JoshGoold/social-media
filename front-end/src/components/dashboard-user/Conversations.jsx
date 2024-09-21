@@ -51,6 +51,7 @@ const Conversations = (props) => {
     if (conversationEndRef.current) {
       conversationEndRef.current.scrollTop =
         conversationEndRef.current.scrollHeight;
+        
     }
   }, [props.userData?.conversations]);
 

@@ -681,5 +681,57 @@ groupRoutes.post("/create-group", async (req, res) => {
     }
   });
 
+    // Configure multer for file storage
+    const ppStorage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, "profilepictures/");
+      },
+      filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+      },
+    });
+    const ppUpload = multer({ storage: ppStorage });
+    
+    groupRoutes.post("/new-group-profilepicture", ppUpload.single("img"), async (req, res) => {
+      const img = req.file ? `/profilepictures/${req.file.filename}` : null;
+      const groupid = req.body.groupid;
+    
+      if (!req.session.userObject) {
+        return res.status(401).send("Unauthorized");
+      }
+
+     
+    
+      try {
+        const group = await Group.findOne({
+          _id: groupid,
+        });
+    
+        if (!group) {
+          return res.status(404).send("No user found");
+        } 
+        
+        if(!req.session.userObject.objID !== group.owner.id){
+          return res.status(400).send({Message: "You must be owner of group to change profile picture", Success: false})
+        }
+    
+        // Update profile picture
+        group.groupProfilePicture = img;
+    
+        // Save the updated user
+        await group.save();
+    
+        // Send success response
+        return res
+          .status(200)
+          .send({ Message: "Profile picture updated successfully", Success: true });
+      } catch (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .send({ Message: "Internal server error", Success: false });
+      }
+    });
+
   module.exports = groupRoutes;
   

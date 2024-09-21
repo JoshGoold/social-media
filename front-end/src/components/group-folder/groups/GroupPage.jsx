@@ -10,6 +10,7 @@ import GroupPosts from './GroupPosts'
 import GroupChat from './GroupChat'
 import CreateGroupLetter from '../function/CreateGroupLetter'
 import CreateGroupPost from '../function/CreateGroupPost'
+import GroupSettings from './GroupSettings'
 
 const GroupPage = () => {
     const nav = useNavigate()
@@ -66,8 +67,9 @@ const GroupPage = () => {
         <div className="text-white text-3xl" onClick={()=> nav(`/dashboard/${username}`)} >
             <FaHome/>
         </div>
-        <div className="">
+        <div className="flex items-center gap-3">
             <h1 className='text-white text-3xl font-thin'>Welcome to the {groupname}</h1>
+            <img className='rounded-full' height={70} width={70} src={`http://localhost:3000${groupData.groupProfilePic}`}/>
         </div>
         </div>
         <div className="">
@@ -77,6 +79,7 @@ const GroupPage = () => {
                 <li onClick={()=> setNavState("Letters")} className={`bg-blue-500 rounded-md ${navState === "Letters" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Letters</li>
                 <li onClick={()=> setNavState("Posts")} className={`bg-blue-500 rounded-md ${navState === "Posts" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Posts</li>
                 <li onClick={()=> setNavState("Chat")} className={`bg-blue-500 rounded-md ${navState === "Chat" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Chat</li>
+                <li onClick={()=> setNavState("Settings")} className={`bg-blue-500 rounded-md ${navState === "Settings" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Settings</li>
             </ul>
         </div>
         {navState === "Hub" && (
@@ -118,6 +121,11 @@ const GroupPage = () => {
         {navState === "Chat" && (
             <div className="mt-3">
                 <GroupChat groupData={groupData} setGroupData={setGroupData}  groupid={groupid} getData={getGroupData}  groupname={groupname}/>
+            </div>
+        )}
+        {navState === "Settings" && (
+            <div className="mt-3">
+                <GroupSettings groupid={groupid} getData={getGroupData}/>
             </div>
         )}
       

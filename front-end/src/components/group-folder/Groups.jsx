@@ -17,7 +17,7 @@ const [navState, setNavState] = useState("")
 const { username } = useParams()
 
   return (
-    <div className='mt-3'>
+    <div className='mt-3 h-screen overflow-scroll hide-scrollbar'>
       <div className="">
       <ul className='text-white flex items-center justify-center gap-3'>
         <li onClick={()=>setNavState("")} className={`p-10 font-thin cursor-pointer ${navState === "" ? "bg-blue-500" : "bg-purple-500"} hover:bg-purple-600 hover:bg-opacity-30 duration-200 bg-opacity-40`}><FaHome/></li>
@@ -31,7 +31,7 @@ const { username } = useParams()
       </ul>
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3 ">
       {navState === "" && (
         <YourGroups user={username}/>
       )}
