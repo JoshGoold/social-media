@@ -76,7 +76,6 @@ const GroupLetters = ({getData, groupid, groupData}) => {
       if (response.data.Success) {
         alert(response.data.Message);
         getData()
-        window.location.reload();
       } else {
         alert(response.data.Message);
       }

@@ -710,7 +710,7 @@ groupRoutes.post("/create-group", async (req, res) => {
         if (!group) {
           return res.status(404).send("No user found");
         } 
-        
+
         if(!req.session.userObject.objID !== group.owner.id){
           return res.status(400).send({Message: "You must be owner of group to change profile picture", Success: false})
         }
@@ -732,6 +732,94 @@ groupRoutes.post("/create-group", async (req, res) => {
           .send({ Message: "Internal server error", Success: false });
       }
     });
+
+    groupRoutes.post("/accept-participant", async (req, res) => {
+      const { username, groupid } = req.body;
+      console.log("Incoming Request:", req.body);
+    
+      if (req.session.userObject) {
+        try {
+          const group = await Group.findById(groupid);
+          if (!group) {
+            return res.status(404).send({ Message: "No group found", Success: false });
+          }
+    
+          const requestedParticipant = await User.findOne({ username: username });
+          if (!requestedParticipant) {
+            return res.status(404).send({ Message: "No user found", Success: false });
+          }
+    
+    
+          const isAdmin = group.groupAdmins.find(admin => admin.id === req.session.userObject.id);
+          if (group.owner.owner_name === req.session.userObject.username || isAdmin) {
+            // Remove requested participant
+            group.requested_participants = group.requested_participants.filter(
+              participant => !participant.participant_id.equals(requestedParticipant._id)
+            );
+    
+            // Add participant to the group
+            group.participants.push({
+              participant_id: requestedParticipant._id,
+              participant_name: requestedParticipant.username,
+              participant_profilePic: requestedParticipant.profilepic
+            });
+    
+            await group.save();
+    
+            res.status(200).send({ Message: `Successfully Added ${requestedParticipant.username} to the group (${group.groupName})!`, Success: true });
+          } else {
+            console.log("Permission Denied:", req.session.userObject.username);
+            res.status(400).send({ Message: "You do not have permission to accept join requests", Success: false });
+          }
+    
+        } catch (error) {
+          console.error("Error processing request:", error);
+          res.status(500).send({ Message: `Internal Server Error ---> ${error.message}`, Success: false });
+        }
+      } else {
+        res.status(401).send({ Message: "Unauthorized", Success: false });
+      }
+    });
+
+    groupRoutes.post("/deny-participant", async (req,res)=>{
+      const {username, groupid} = req.body;
+      if(req.session.userObject){
+        try {
+          const group = await Group.findById(groupid)
+
+          if(!group){
+            return res.status(404).send({Message: "No group found", Success: false})
+          }
+          const requestedParticipant = await User.findOne({username: username})
+
+          if(!requestedParticipant){
+            return res.status(404).send({Message: "No user found", Success: false})
+          }
+
+          const isAdmin = group.groupAdmins.find(admin => admin.id === req.session.userObject.id);
+
+          if(group.owner.owner_name === req.session.userObject.username || isAdmin){
+
+            group.requested_participants = group.requested_participants.filter(
+              participant => !participant.participant_id.equals(requestedParticipant._id)
+            );
+
+            await group.save()
+
+            res.status(200).send({Message: "Successfully Denied Request", Success: true})
+          } else{
+            console.log("Permission Denied:", req.session.userObject.username);
+            res.status(400).send({Message: "You do not have permission to accept join requests", Success: false})
+          }
+
+        } catch (error) {
+          res.status(500).send({Message: `Internal Server Error ---> ${error.message}`, Success: false})
+          console.error("Error processing request:", error);
+        }
+      }else{
+        res.status(400).send({Message: "You must be logged in", Success: false})
+      }
+    })
 
   module.exports = groupRoutes;
   

@@ -68,13 +68,13 @@ const GroupPosts = ({getData, groupid, groupData}) => {
         `http://localhost:3000/delete-group-post`,
         {
           id: id,
+          groupid: groupid
         },
         { withCredentials: true }
       );
       if (response.data.Success) {
         alert(response.data.Message);
         getData()
-        window.location.reload();
       } else {
         alert(response.data.Message);
       }
@@ -95,7 +95,7 @@ const GroupPosts = ({getData, groupid, groupData}) => {
             >
               <button
                 className="hover:scale-110 rounded-full "
-                onClick={() => deletePost(String(post._id))}
+                onClick={() => deletePost(post._id)}
                 title="Delete Post"
               >
                 🔴

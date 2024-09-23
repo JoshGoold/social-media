@@ -48,7 +48,7 @@ const GroupPage = () => {
                     owner: response.data.groupData.owner,
                     participants: response.data.groupData.participants,
                     posts: response.data.groupData.posts,
-                    requested: response.data.groupData.requested_participants
+                    requested: response.data.groupData.requested_participants,
                 }))
             } else{
                 alert(response.data.Message)
@@ -79,7 +79,7 @@ const GroupPage = () => {
                 <li onClick={()=> setNavState("Letters")} className={`bg-blue-500 rounded-md ${navState === "Letters" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Letters</li>
                 <li onClick={()=> setNavState("Posts")} className={`bg-blue-500 rounded-md ${navState === "Posts" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Posts</li>
                 <li onClick={()=> setNavState("Chat")} className={`bg-blue-500 rounded-md ${navState === "Chat" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Chat</li>
-                <li onClick={()=> setNavState("Settings")} className={`bg-blue-500 rounded-md ${navState === "Settings" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Settings</li>
+                {groupData.owner.owner_name === username && (<li onClick={()=> setNavState("Settings")} className={`bg-blue-500 rounded-md ${navState === "Settings" ? "bg-purple-500" : ""} p-2 cursor-pointer`}>Settings</li>)}
             </ul>
         </div>
         {navState === "Hub" && (
@@ -97,7 +97,7 @@ const GroupPage = () => {
         )}
         {navState === "Members" && (
             <div className="mt-3">
-                <GroupMembers groupData={groupData}/>
+                <GroupMembers getData={getGroupData} groupid={groupid} groupData={groupData}/>
             </div>
         )}
         {navState === "Letters" && (
@@ -123,7 +123,7 @@ const GroupPage = () => {
                 <GroupChat groupData={groupData} setGroupData={setGroupData}  groupid={groupid} getData={getGroupData}  groupname={groupname}/>
             </div>
         )}
-        {navState === "Settings" && (
+        {navState === "Settings" && groupData.owner.owner_name === username && (
             <div className="mt-3">
                 <GroupSettings groupid={groupid} getData={getGroupData}/>
             </div>
